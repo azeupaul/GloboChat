@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.sriyank.globochat.ChatListFragmentDirections
 
 
 class ChatListFragment : Fragment() {
