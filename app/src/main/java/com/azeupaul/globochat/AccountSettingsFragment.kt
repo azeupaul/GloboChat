@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.*
 
 
 class AccountSettingsFragment : PreferenceFragmentCompat() {
@@ -46,11 +43,19 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
         val prefScreen = preferenceManager.createPreferenceScreen(context)
 
+        val notePref = SeekBarPreference(context)
+        notePref.title = "Note"
+        notePref.summary = "Define note for the application"
+        notePref.max = 5
+        notePref.min = 0
+        notePref.isIconSpaceReserved = false
+
         // Step 2: Add all the Preference objects in hierarchy
         prefScreen.addPreference(privacyCategory)
         prefScreen.addPreference(securityCategory)
 
         privacyCategory.addPreference(publicInfoPref)
+        privacyCategory.addPreference(notePref)
 
         securityCategory.addPreference(logOutPref)
         securityCategory.addPreference(deleteAccPref)
