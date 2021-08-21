@@ -1,15 +1,19 @@
 package com.azeupaul.globochat
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.preference.PreferenceManager
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -31,5 +35,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Call when preferecences has changed
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key == getString(R.string.key_status)){
+            val newStatus = sharedPreferences?.getString(key, "")
+            Toast.makeText(this, "New status: $newStatus", Toast.LENGTH_SHORT).show()
+        }
+
+        if(key == getString(R.string.key_auto_reply)){
+            val auto_reply = sharedPreferences?.getBoolean(key, false)
+            if (auto_reply == true){
+                Toast.makeText(this, "New auto_reply: ON", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "New auto_reply: OFF", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this)
     }
 }
